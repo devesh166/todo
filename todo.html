@@ -2,9 +2,9 @@
 <html>
 
 <head>
-  <style>
- 
-  </style>
+    <style>
+
+    </style>
 </head>
 
 <body onload="todo()"> </body>
@@ -12,141 +12,201 @@
 
 
 <script>
-function todo(){
-    var div = document.createElement('div');
-    var input1 =document.createElement('input');
+    var obj = [];
+    var table;
+    //var count=0;
+    function todo() {
+
+        var div = document.createElement('div');
+        var input1 = document.createElement('input');
         input1.setAttribute("type", "date");
         input1.setAttribute("id", "dateid");
-    var label1 = document.createElement('label');
-    var text1 =document.createTextNode("Date : ");
-    var input2 =document.createElement('input');
+        var label1 = document.createElement('label');
+        var text1 = document.createTextNode("Date : ");
+        var input2 = document.createElement('input');
         input2.setAttribute("type", "text");
         input2.setAttribute("id", "textid");
-    var label2 = document.createElement('label');
-    var text2 =document.createTextNode("  Description : ");
-    label1.appendChild(text1);
-    div.appendChild(label1);
-    div.appendChild(input1);
-    label2.appendChild(text2)
-    div.appendChild(label2);
-    div.appendChild(input2);
-    document.body.appendChild(div);
+        var label2 = document.createElement('label');
+        var text2 = document.createTextNode("  Description : ");
+        label1.appendChild(text1);
+        div.appendChild(label1);
+        div.appendChild(input1);
+        label2.appendChild(text2)
+        div.appendChild(label2);
+        div.appendChild(input2);
+        document.body.appendChild(div);
 
 
 
 
 
-    var div1 = document.createElement('div');
-    var button =document.createElement('button');
-    button.setAttribute("id", "buttonid")
-    var buttontext =document.createTextNode(" + ");
-    button.appendChild(buttontext)
-    div1.appendChild(button)
-    document.body.appendChild(div1);
+        var div1 = document.createElement('div');
+        var button = document.createElement('button');
+        button.setAttribute("id", "buttonid")
+        var buttontext = document.createTextNode(" + ");
+        button.appendChild(buttontext)
+        div1.appendChild(button)
+        document.body.appendChild(div1);
 
 
-    var table = document.createElement('table');
-        table.border = "0";
+        table = document.createElement('table');
+            table.setAttribute("id","tableid")
+        table.border = "1";
 
-    document.getElementById("buttonid").style.margin = "20px 10px 20px 200px";
-    document.getElementById("buttonid").addEventListener("click", list);
-    
-    var thead = document.createElement('thead');
-    var theader1 = document.createElement("th")
-    var theader2 = document.createElement("th")
-    var textheader1 = document.createTextNode("Date");
-    var textheader2 = document.createTextNode("Description");
-    theader1.appendChild(textheader1)
-    theader2.appendChild(textheader2)
-    thead.appendChild(theader1)
-    thead.appendChild(theader2)
-    table.appendChild(thead)
-    document.body.appendChild(table);
+        document.getElementById("buttonid").style.margin = "20px 10px 20px 200px";
+        document.getElementById("buttonid").addEventListener("click", loadTable);
 
-    
-  
-    var count =0;
-    var obj =[];
-    
-    function list(){
-        var td=[];
-        
-        var date =document.getElementById("dateid").value;
-        var text =document.getElementById("textid").value;
-        obj[count] = { "date": date , "text":text};
-
-
-        var rowid = count;
-
-        var tr = document.createElement('tr');
-            //tr.setAttribute("id", count++ );
-        td[0] =document.createElement('td');
-          td[1] =document.createElement('td');
-         td[2] =document.createElement('td');
-        var tabletext =document.createTextNode(obj[count].text);
-        var tabledate =document.createTextNode("  "+obj[count].date);
-        var tabledel =document.createTextNode("  X" );
-            td[2].setAttribute("id",rowid)
-
-
-        td[0].appendChild(tabledate);
-        td[1].appendChild(tabletext);
-        td[2].appendChild(tabledel);
-
-        tr.appendChild(td[0]);
-        tr.appendChild(td[1]);
-        tr.appendChild(td[2]);
-        
-        table.appendChild(tr);
+        var thead = document.createElement('thead');
+        var theader1 = document.createElement("th")
+        var theader2 = document.createElement("th")
+        theader1.setAttribute("id","tabledate");
+        theader2.setAttribute("id","tabletext");
+        var textheader1 = document.createTextNode("Date");
+        var textheader2 = document.createTextNode("Description");
+        theader1.appendChild(textheader1)
+        theader2.appendChild(textheader2)
+        thead.appendChild(theader1)
+        thead.appendChild(theader2)
+        table.appendChild(thead)
         document.body.appendChild(table);
-        var element =document.getElementById(rowid);
-        element.addEventListener("click",deleteRow );
-        
-        
-        function deleteRow()  
-          {   
-    var row = document.getElementById(rowid);
-    var table = row.parentNode;
-    while ( table && table.tagName != 'TABLE' )
-        table = table.parentNode;
-    if ( !table )
-        return;
-    table.deleteRow(row.rowIndex);
-           }
-            count++;
+       
+        document.getElementById("tabledate").addEventListener("click", sortdate)
+        document.getElementById("tabletext").addEventListener("click", sorttext)
 
-
-
-         
-        //console.log(obj[count]);
-
-
-         
-         }
-         
-
-        // document.getElementById("buttonid").addEventListener("click", list);
     }
-  
-  
-    
+
+    function loadTable(){
+            
+        var date = document.getElementById("dateid").value;
+            var text = document.getElementById("textid").value;
+            obj.push( { "date": date, "text": text })
+            //console.log(obj)
+            let i = obj.length-1;
+            var td = [];
+            var rowid ="row"+ i ;
+            var tr = document.createElement('tr');
+
+              tr.setAttribute("id", rowid );
+            td[0] = document.createElement('td');
+            td[1] = document.createElement('td');
+            td[2] = document.createElement('td');
+            var tabletext = document.createTextNode(obj[i].text);
+            var tabledate = document.createTextNode("  " + obj[i].date);
+            var tabledel = document.createTextNode("  X");
+            td[2].setAttribute("id", i)
 
 
-   
-    
+            td[0].appendChild(tabledate);
+            td[1].appendChild(tabletext);
+            td[2].appendChild(tabledel);
 
- 
+            tr.appendChild(td[0]);
+            tr.appendChild(td[1]);
+            tr.appendChild(td[2]);
 
-   
+            table.appendChild(tr);
+            document.body.appendChild(table);
+            document.getElementById(i).addEventListener("click",function(event){
+               obj.splice(event.target.id,1);
+               let temp = document.getElementsByTagName("table");
+                temp[0].remove();
+               createTable();
+
+                
+
+            });
 
 
 
+    }
+    function createTable(){
+        
+        table = document.createElement('table');
+            table.setAttribute("id","tableid")
+        table.border = "1";
 
 
+        var thead = document.createElement('thead');
+        var theader1 = document.createElement("th")
+        var theader2 = document.createElement("th")
+        theader1.setAttribute("id","tabledate");
+        theader2.setAttribute("id","tabletext");
+        var textheader1 = document.createTextNode("Date");
+        var textheader2 = document.createTextNode("Description");
+        theader1.appendChild(textheader1)
+        theader2.appendChild(textheader2)
+        thead.appendChild(theader1)
+        thead.appendChild(theader2)
+        table.appendChild(thead)
+        document.body.appendChild(table);
+
+        document.getElementById("tabledate").addEventListener("click", sortdate)
+        document.getElementById("tabletext").addEventListener("click", sorttext)
+            
+
+        for(let i = 0; i < obj.length; i++) {
+            
+            var td = [];
+            var rowid ="row"+ i ;
+            var tr = document.createElement('tr');
+
+              tr.setAttribute("id", rowid );
+            td[0] = document.createElement('td');
+            td[1] = document.createElement('td');
+            td[2] = document.createElement('td');
+            var tabletext = document.createTextNode(obj[i].text);
+            var tabledate = document.createTextNode("  " + obj[i].date);
+            var tabledel = document.createTextNode("  X");
+            td[2].setAttribute("id", i)
 
 
+            td[0].appendChild(tabledate);
+            td[1].appendChild(tabletext);
+            td[2].appendChild(tabledel);
 
- 
+            tr.appendChild(td[0]);
+            tr.appendChild(td[1]);
+            tr.appendChild(td[2]);
+
+            table.appendChild(tr);
+            document.body.appendChild(table);
+            document.getElementById(i).addEventListener("click",function(){
+                obj.splice(event.target.id,1);
+                let temp = document.getElementsByTagName("table");
+                temp[0].remove();
+               createTable();
+
+            });
+
+    }
+    }
+
+
+   function sortdate(){
+       obj.sort(function(a,b){
+        var dateA=new Date(a.date)
+        var dateB= new Date(b.date)
+        return dateA-dateB
+       })
+       let temp = document.getElementsByTagName("table");
+        temp[0].remove();
+       createTable();
+   } 
+
+   function sorttext(){
+       obj.sort(function(a,b){
+           var textA =a.text.toLowerCase();
+           var textB = b.text.toLowerCase();
+           if(textA<textB)
+           return -1
+           if(textA>textB)
+           return 1
+           return 0;
+       })
+       let temp = document.getElementsByTagName("table");
+        temp[0].remove();
+       createTable();
+   }
 
 </script>
 
